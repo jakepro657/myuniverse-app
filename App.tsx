@@ -1,42 +1,41 @@
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native";
 import { Appbar, Button, Card, Text } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import GlobalAppbar from "./components/GlobalAppbar";
+import JobServicesBlock from "./components/JobServicesBlock";
+import TrendingUniverseBlock from "./components/TrendingUniverseBlock";
+import { useEffect, useState } from "react";
 
 export default function App() {
+  const URL = "http://:8000/user";
+  const [data, setData] = useState<string>("");
+  const [id, setId] = useState(1);
+
+  const fetchData = async () => {
+    const response = await fetch(`${URL}/${id}`, {
+      method: "GET",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+
+    setData(result.data.email);
+  };
+
+  useEffect(() => {
+    fetchData();
+  });
+
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
         <ScrollView>
-          <Appbar.Header style={styles.appbar}>
-            <Appbar.Action icon="menu" onPress={() => {}} />
-            <Appbar.Content title="MY-UNIVERSE" />
-            <Appbar.Action icon="bell-badge-outline" onPress={() => {}} />
-          </Appbar.Header>
-
-          <Text style={styles.trendingUniverseTitle}>Trending Universe</Text>
-          <ScrollView style={styles.trendingUniverse} horizontal={true}>
-            <Card style={styles.trending}>
-              <Card.Title title="Card Title" subtitle="Card Subtitle" />
-            </Card>
-            <Card style={styles.trending}>
-              <Card.Title title="Card Title" subtitle="Card Subtitle" />
-            </Card>
-            <Card style={styles.trending}>
-              <Card.Title title="Card Title" subtitle="Card Subtitle" />
-            </Card>
-          </ScrollView>
-          <Text style={styles.trendingUniverseTitle}>Job Services</Text>
-          <View style={styles.jobServices}>
-            <Card style={styles.job}>
-              <Text>1</Text>
-            </Card>
-            <Card style={styles.job}>
-              <Text>2</Text>
-            </Card>
-            <Card style={styles.job}>
-              <Text>3</Text>
-            </Card>
-          </View>
+          <GlobalAppbar />
+          <Text style={styles.text} key={1}>{data}</Text>
+          <TrendingUniverseBlock />
+          <JobServicesBlock />
         </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
@@ -51,33 +50,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  appbar: {
-    backgroundColor: "white",
-  },
-  trending: {
-    width: 128,
-    height: 160,
-    marginLeft: 16,
-    marginBottom: 8,
-    backgroundColor: "white",
-  },
-  trendingUniverse: {},
-  trendingUniverseTitle: {
-    padding: 16,
+  text: {
     fontSize: 20,
-    marginTop: 32,
-  },
-  jobServices: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  job: {
-    shadowOpacity: 0,
-    backgroundColor: "white",
-    width: 328,
-    height: 160,
-    marginBottom: 16,
-    padding: 16,
-  },
+    marginLeft: 16,
+    marginTop: 16
+  }
 });
