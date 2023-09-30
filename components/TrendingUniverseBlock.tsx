@@ -5,11 +5,12 @@ const styles = StyleSheet.create({
   trending: {
     width: 128,
     height: 160,
-    marginLeft: 16,
-    marginBottom: 8,
+    marginHorizontal: 16,
+    marginBottom: 16,
     backgroundColor: "white",
   },
-  trendingUniverse: {},
+  trendingUniverse: {
+  },
   trendingUniverseTitle: {
     padding: 16,
     fontSize: 20,
